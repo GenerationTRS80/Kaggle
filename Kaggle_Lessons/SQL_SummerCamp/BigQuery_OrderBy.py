@@ -1,6 +1,8 @@
 from google.cloud import bigquery
 import pandas as pd
 
+# Updated July 16 2019 9:30 PM
+
 print('Version Pandas = ', pd.__version__)
 print('BigQuery = ', bigquery.__version__)
 
