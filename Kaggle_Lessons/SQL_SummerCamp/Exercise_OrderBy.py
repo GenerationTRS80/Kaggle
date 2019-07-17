@@ -34,11 +34,11 @@ print('\n\r', ' ', 'Selected able Name = ', table.table_id, '\n\r', ' ')
 for field in table.schema:
     print('Field Name = ', field.name)
 
-df = client.list_rows(table, max_results=5).to_dataframe()
+# df = client.list_rows(table, max_results=5).to_dataframe()
 
 
-print(df)
-print('Min year', df['year'].min())
+# print(df)
+# print('Min year', df['year'].min())
 
 #  >>> Use return a query to a dataframe with Bigquery <<<s
 
@@ -46,16 +46,27 @@ print('Min year', df['year'].min())
 # your quota, with the limit set to 1 GB)
 
 sSQL = """
-            SELECT year, country_name, country_code, SUM(value)
+            SELECT country_name,  AVG(value) as avg_ed_spending_pct
             FROM `bigquery-public-data.world_bank_intl_education.international_education`
-            WHERE country_code='UZB'
-            GROUP BY year, country_name, country_code
-            ORDER BY year
+            WHERE (year >= 2010 AND year <= 2017) AND indicator_code = 'SE.XPD.TOTL.GD.ZS'
+            GROUP BY country_name
+            ORDER BY avg_ed_spending_pct DESC
         """
+sSQL2 = """
+            SELECT indicator_code, indicator_name, COUNT(value) as num_rows
+            FROM `bigquery-public-data.world_bank_intl_education.international_education`
+            WHERE year = 2016
+            GROUP BY indicator_code, indicator_name
+            HAVING COUNT(value)>=175
+            ORDER BY num_rows DESC
+        """
+
+# WHERE indicator_code = 'SE.XPD.TOTL.GD.ZS'
+
 # print(sSQL)
 
 # Retrieve BigQuery data as a Pandas DataFrame
 safe_config = bigquery.QueryJobConfig(maximum_bytes_billed=10 ** 10)
-dfQry = client.query(sSQL, job_config=safe_config).to_dataframe()
+dfQry = client.query(sSQL2, job_config=safe_config).to_dataframe()
 
-# print(dfQry.head())
+print(dfQry.head(20))
