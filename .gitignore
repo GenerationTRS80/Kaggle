@@ -1,3 +1,9 @@
 # Logs
 logs
 *.log
+*.csv
+*.json
+*.pyx
+temp.py
+test_colab.py
+ScratchPad.py
