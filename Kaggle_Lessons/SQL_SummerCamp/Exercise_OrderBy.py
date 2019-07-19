@@ -34,11 +34,12 @@ print('\n\r', ' ', 'Selected able Name = ', table.table_id, '\n\r', ' ')
 for field in table.schema:
     print('Field Name = ', field.name)
 
-# df = client.list_rows(table, max_results=5).to_dataframe()
+# Use BigQuery API client to return a dataframe
+df = client.list_rows(table, max_results=5).to_dataframe()
 
 
-# print(df)
-# print('Min year', df['year'].min())
+print(df)
+print('Min year', df['year'].min())
 
 #  >>> Use return a query to a dataframe with Bigquery <<<s
 
