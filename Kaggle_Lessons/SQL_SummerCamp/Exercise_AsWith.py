@@ -50,7 +50,7 @@ print(sSQL)
 
 # Setup query cancel if more data is used that set with safe_config
 safe_config = bigquery.QueryJobConfig(maximum_bytes_billed=10**10)
-#dfTrips = client.query(sSQL, job_config=safe_config).to_dataframe()
-dfTrips = client.query(sSQL).to_dataframe()
+dfTrips = client.query(sSQL, job_config=safe_config).to_dataframe()
+#dfTrips = client.query(sSQL).to_dataframe()
 
 print(dfTrips)
