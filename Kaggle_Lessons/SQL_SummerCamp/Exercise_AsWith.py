@@ -33,12 +33,13 @@ print(df.head())
 
 sSQL = """ 
  WITH TaxiTrips AS (
-            SELECT EXTRACT(YEAR FROM trip_start_timestamp) as Year, EXTRACT(MONTH FROM trip_start_timestamp) as Month, taxi_id
+            SELECT EXTRACT(YEAR FROM trip_start_timestamp) as Year, EXTRACT(MONTH FROM trip_start_timestamp) as Month, trip_start_timestamp
             FROM `bigquery-public-data.chicago_taxi_trips.taxi_trips`
             )
         """ + '\n\r'
 
-sSQL = sSQL + """Select Year, Month, COUNT(taxi_id) as num_trips""" + '\n\r'
+sSQL = sSQL + \
+    """Select Year, Month, COUNT(trip_start_timestamp) as num_trips""" + '\n\r'
 
 sSQL = sSQL + """ FROM TaxiTrips""" + '\n\r'
 sSQL = sSQL + """ WHERE Year=2017 """ + '\n\r'
