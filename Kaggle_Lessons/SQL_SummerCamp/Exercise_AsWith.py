@@ -31,22 +31,25 @@ df = client.list_rows(tblTrips, max_results=50).to_dataframe()
 
 print(df.head())
 
-sSQL = """ WITH TaxiTrips AS (
-            SELECT EXTRACT(YEAR FROM trip_start_timestamp) as Year, COUNT(taxi_id) as num_trips
-            FROM 'bigquery-public-data.chicago_taxi_trips.taxi_trips'
+sSQL = """ 
+ WITH TaxiTrips AS (
+            SELECT EXTRACT(YEAR FROM trip_start_timestamp) as Year, EXTRACT(MONTH FROM trip_start_timestamp) as Month, taxi_id
+            FROM `bigquery-public-data.chicago_taxi_trips.taxi_trips`
             )
         """ + '\n\r'
 
-sSQL = sSQL + """ SELECT Year, num_trips""" + '\n\r'
+sSQL = sSQL + """Select Year, Month, COUNT(taxi_id) as num_trips""" + '\n\r'
+
 sSQL = sSQL + """ FROM TaxiTrips""" + '\n\r'
-# sSQL = sSQL + """ WHERE  """ + '\n\r'
-sSQL = sSQL + """ Group By Year """ + '\n\r'
-sSQL = sSQL + """ Order By Year"""
+sSQL = sSQL + """ WHERE Year=2017 """ + '\n\r'
+sSQL = sSQL + """ Group By Year, Month""" + '\n\r'
+sSQL = sSQL + """ Order By Year, Month"""
 
 print(sSQL)
 
 # Setup query cancel if more data is used that set with safe_config
 safe_config = bigquery.QueryJobConfig(maximum_bytes_billed=10**10)
-dfTrips = client.query(sSQL, job_config=safe_config).to_dataframe()
+#dfTrips = client.query(sSQL, job_config=safe_config).to_dataframe()
+dfTrips = client.query(sSQL).to_dataframe()
 
-print(dfTrimps.head())
+print(dfTrips)
