@@ -33,3 +33,22 @@ for field in tblReturned.schema:
 df = client.list_rows(tblReturned, max_results=5).to_dataframe()
 
 print(df)
+
+# Query dataframe
+
+questions_query = """
+                    Select id, title, owner_user_id
+                    From `bigquery-public-data.stackoverflow.posts_questions`
+                    Where tags LIKE '%bigquery%'
+                  """
+
+# Set up the query (cancel the query if it would use too much of
+# your quota, with the limit set to 1 GB)
+safe_config = bigquery.QueryJobConfig(maximum_bytes_billed=10 ** 10)
+questions_query_job = questions_query
+
+# API request - run the query, and return a pandas DataFrame
+questions_results = client.query(
+    questions_query_job, job_config=safe_config).to_dataframe()
+
+print(questions_results.head())
