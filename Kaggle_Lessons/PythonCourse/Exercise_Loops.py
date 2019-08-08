@@ -146,7 +146,7 @@ for letter in 'abdc':
 
 print(my_list)
 
-Nested for loops with list comprehensions
+# Nested for loops with list comprehensions
 my_list = [letter for letter in 'abcd' for num in range(4)]
 my_list = [(letter, num) for letter in 'abcd' for num in range(4)]
 
@@ -168,3 +168,18 @@ meals = ['sandwitch', 'tuna', 'pizza',
          'ravioli', 'hamburger', 'hamburger', 'pizza']
 
 print(menu_is_boring(meals))
+
+# Exercise 3 with List comprehension using any() function
+
+
+def menu_is_boring_comprehensions(meals):
+    if any([meals[i] for i in range(len(meals)-1) if meals[i] == meals[i+1]]):
+        return True
+
+    return False
+
+
+meals = ['sandwich', 'tuna', 'pizza', 'ravioli',
+         'hamburger', 'spaghetti', 'pizza']
+
+menu_is_boring_comprehensions(meals)
